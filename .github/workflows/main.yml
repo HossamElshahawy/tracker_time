@@ -1,0 +1,33 @@
+name: Work Hours Monitor
+
+on:
+  schedule:
+    # رن كل 30 دقيقة من 7 صباحاً لـ 8 مساءً بتوقيت مصر (5-18 UTC)
+    - cron: '*/30 7-16 * * *'
+  workflow_dispatch: # للتشغيل اليدوي
+
+jobs:
+  run-tracker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run Tracker Script
+        run: php tracker.php
+
+      - name: Sync Changes back to Repo
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add state.json cookie.txt || true
+          git commit -m "Update state [skip ci]" || echo "No changes"
+          git push
