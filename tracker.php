@@ -2,11 +2,11 @@
 date_default_timezone_set('Africa/Cairo');
 
 $CONFIG = [
-    'EMAIL'       => 'hossamelshahawy13@gmail.com',
-    'PASSWORD'    => '01013677499',
+    'EMAIL'       => 'mohammedhammed701@gmail.com',
+    'PASSWORD'    => 'Mm01122m',
     'WA_APPKEY'   => '65dffdb4-3fd6-4858-9efe-b03060997923',
     'WA_AUTHKEY'  => 'VRi37ABpmoNC26Zmu0VPclonet9LP1SGfYBNQegZKoM1TiwHcD',
-    'WA_NUMBER'   => '201013677499',
+    'WA_NUMBER'   => '201144906897',
     'TARGET_MIN'  => 510, // 8.5 ساعات
 ];
 
@@ -62,6 +62,14 @@ function login($config, $cookieFile) {
         'remember_me' => 'on'
     ], $cookieFile);
 }
+function startTimer($cookieFile) {
+    curlRequest('https://erp.designal.cc/tasks/timer/3337/start?source=card', [], $cookieFile);
+}
+
+function stopTimer($cookieFile) {
+    curlRequest('https://erp.designal.cc/tasks/timer/3337/stop?source=card', [], $cookieFile);
+}
+
 
 // جلب الساعات المسجلة (بعد عمل Stop)
 function getRecordedMinutes($cookieFile) {
@@ -111,6 +119,47 @@ function sendWhatsApp($msg, $config) {
 // --- التنفيذ ---
 try {
     login($CONFIG, $COOKIE_FILE);
+    $day = (int)date('w'); // 0=الأحد ... 6=السبت
+
+// اشتغل بس من الأحد (0) للخميس (4)
+if ($day < 0 || $day > 4) {
+    echo "خارج أيام العمل\n";
+    exit;
+}else {
+    echo "داخل أيام العمل\n";
+}
+    $currentTime = date('H:i');
+    echo "الوقت الحالي: $currentTime\n";
+
+$currentHour = (int)date('H');
+
+$recordedMin = getRecordedMinutes($COOKIE_FILE);
+$activeMin   = getActiveTimerMinutes($COOKIE_FILE);
+$totalMin    = $recordedMin + $activeMin;
+
+// =======================
+// 🟢 تشغيل التايمر
+// =======================
+if ($currentHour >= 8 && $currentHour < 16) {
+    if ($activeMin == 0) {
+        startTimer($COOKIE_FILE);
+        echo "تم تشغيل التايمر تلقائيًا\n";
+
+        sendWhatsApp("🟢 تم تشغيل التايمر تلقائيًا الساعه $currentHour لأننا داخل وقت العمل", $CONFIG);
+    }
+}
+
+// =======================
+// 🔴 إيقاف التايمر
+// =======================
+if ($currentHour >= 16) {
+    if ($activeMin > 0 && $totalMin >= $CONFIG['TARGET_MIN']) {
+        stopTimer($COOKIE_FILE);
+        echo "تم إيقاف التايمر بعد تحقيق الهدف\n";
+
+        sendWhatsApp("🔴 تم إيقاف التايمر الساعه $currentHour بعد إنهاء التارجت ومجموع الساعات: $totalMin 🎯", $CONFIG);
+    }
+}
     $state = loadState($STATE_FILE);
 
     // حساب الإجمالي
