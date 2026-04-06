@@ -2,11 +2,11 @@
 date_default_timezone_set('Africa/Cairo');
 
 $CONFIG = [
-    'EMAIL'       => 'mohammedhammed701@gmail.com',
-    'PASSWORD'    => 'Mm01122m',
+    'EMAIL'       => 'hossamelshahawy13@gmail.com',
+    'PASSWORD'    => '01013677499',
     'WA_APPKEY'   => '65dffdb4-3fd6-4858-9efe-b03060997923',
     'WA_AUTHKEY'  => 'VRi37ABpmoNC26Zmu0VPclonet9LP1SGfYBNQegZKoM1TiwHcD',
-    'WA_NUMBER'   => '201144906897',
+    'WA_NUMBER'   => '201013677499',
     'TARGET_MIN'  => 510, // 8.5 ساعات
 ];
 
@@ -63,11 +63,11 @@ function login($config, $cookieFile) {
     ], $cookieFile);
 }
 function startTimer($cookieFile) {
-    curlRequest('https://erp.designal.cc/tasks/timer/3337/start?source=card', [], $cookieFile);
+    curlRequest('https://erp.designal.cc/tasks/timer/3376/start?source=card', [], $cookieFile);
 }
 
 function stopTimer($cookieFile) {
-    curlRequest('https://erp.designal.cc/tasks/timer/3337/stop?source=card', [], $cookieFile);
+    curlRequest('https://erp.designal.cc/tasks/timer/3376/stop?source=card', [], $cookieFile);
 }
 
 
