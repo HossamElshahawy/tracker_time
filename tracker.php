@@ -7,7 +7,7 @@ $CONFIG = [
     'WA_APPKEY'   => '65dffdb4-3fd6-4858-9efe-b03060997923',
     'WA_AUTHKEY'  => 'VRi37ABpmoNC26Zmu0VPclonet9LP1SGfYBNQegZKoM1TiwHcD',
     'WA_NUMBER'   => '201013677499',
-    'TARGET_MIN'  => 510, // 8.5 ساعات
+    'TARGET_MIN'  => 480, // 8 ساعات
 ];
 
 $COOKIE_FILE = __DIR__ . '/cookie.txt';
